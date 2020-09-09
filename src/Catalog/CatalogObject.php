@@ -4,6 +4,8 @@
 namespace smn\phs\Catalog;
 
 
+use smn\cheapbinarytds\Node;
+
 class CatalogObject implements CatalogObjectInterface
 {
 
@@ -13,12 +15,33 @@ class CatalogObject implements CatalogObjectInterface
      */
     protected string $name;
 
+
+    /**
+     * Type of the object
+     * @var string
+     */
+    protected string $type;
+
+
+    /**
+     * @var Node
+     */
+    protected Node $structure;
+
+
+    public function __construct(string $name, string $type) {
+        $this->setName($name);
+        $this->setType($type);
+        $this->structure = new Node($this->getName(), $this);
+    }
+
     /**
      * @inheritDoc
      */
     public function setName(string $name)
     {
         // TODO: Implement setName() method.
+        $this->name = $name;
     }
 
     /**
@@ -27,6 +50,7 @@ class CatalogObject implements CatalogObjectInterface
     public function getName(): string
     {
         // TODO: Implement getName() method.
+        return $this->name;
     }
 
     /**
@@ -35,6 +59,7 @@ class CatalogObject implements CatalogObjectInterface
     public function setType(string $type)
     {
         // TODO: Implement setType() method.
+        $this->type = $type;
     }
 
     /**
@@ -42,7 +67,8 @@ class CatalogObject implements CatalogObjectInterface
      */
     public function getType(): string
     {
-        // TODO: Implement getType() method.
+        //
+        return $this->type;
     }
 
     /**
@@ -51,6 +77,11 @@ class CatalogObject implements CatalogObjectInterface
     public function addChildInstance(CatalogInterface $instance)
     {
         // TODO: Implement addChildInstance() method.
+        $name = $instance->getName();
+        $type = $instance->getType();
+
+        $index = sprintf('%s.%s', $type, $name);
+
     }
 
     /**
@@ -131,5 +162,15 @@ class CatalogObject implements CatalogObjectInterface
     public function toString(): string
     {
         // TODO: Implement toString() method.
+    }
+
+    public function setParent(CatalogInterface $parent)
+    {
+        // TODO: Implement setParent() method.
+    }
+
+    public function getParent(): CatalogInterface
+    {
+        // TODO: Implement getParent() method.
     }
 }

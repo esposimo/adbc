@@ -115,4 +115,17 @@ interface CatalogInterface
      */
     public function getChildrenType(string $type) : array;
 
+
+    /**
+     * Config parent of instance.
+     * @param CatalogInterface $parent
+     */
+    public function setParent(CatalogInterface $parent);
+
+    /**
+     * Return parent of instance
+     * @return CatalogInterface
+     */
+    public function getParent() : CatalogInterface;
+
 }
