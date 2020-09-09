@@ -1,0 +1,23 @@
+{
+  "name": "smn/dbc",
+  "description": "Database Abstraction Layer",
+  "minimum-stability": "stable",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Simone",
+      "email": "simone.esposito1986@gmail.copm"
+    }
+  ],
+  "autoload": {
+    "psr-4": { "smn\\phs\\": "src/" }
+  },
+  "require": {
+    "php": "^7.4",
+    "smn/cheapbinarytds": "dev-master"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "dev-master",
+    "friendsofphp/php-cs-fixer": "dev-master"
+  }
+}
