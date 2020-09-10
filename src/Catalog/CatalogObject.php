@@ -3,9 +3,10 @@
 
 namespace smn\phs\Catalog;
 
-
-use smn\cheapbinarytds\Node;
-
+/**
+ * Class CatalogObject
+ * @package smn\phs\Catalog
+ */
 class CatalogObject implements CatalogObjectInterface
 {
 
@@ -24,15 +25,22 @@ class CatalogObject implements CatalogObjectInterface
 
 
     /**
-     * @var Node
+     * Multidimensional array. Index are children's type. Value of each index are a list of CatalogInterface objects
+     * @var array
      */
-    protected Node $structure;
+    protected array $children;
+
+    /**
+     * Parent object of this instance
+     * @var ?CatalogInterface
+     */
+    protected ?CatalogInterface $parent;
 
 
     public function __construct(string $name, string $type) {
         $this->setName($name);
         $this->setType($type);
-        $this->structure = new Node($this->getName(), $this);
+        $this->parent = null;
     }
 
     /**
@@ -67,7 +75,6 @@ class CatalogObject implements CatalogObjectInterface
      */
     public function getType(): string
     {
-        //
         return $this->type;
     }
 
@@ -76,12 +83,15 @@ class CatalogObject implements CatalogObjectInterface
      */
     public function addChildInstance(CatalogInterface $instance)
     {
-        // TODO: Implement addChildInstance() method.
-        $name = $instance->getName();
         $type = $instance->getType();
 
-        $index = sprintf('%s.%s', $type, $name);
-
+        if (!$this->hasChildInstance($instance)) {
+            $this->children[$type][] = $instance;
+            $instance->setParent($this);
+        }
+        else {
+            // TODO: add throw exception.
+        }
     }
 
     /**
@@ -122,6 +132,7 @@ class CatalogObject implements CatalogObjectInterface
     public function hasChild(string $name, string $type): bool
     {
         // TODO: Implement hasChild() method.
+        return (!$this->hasChildType($type)) ? false : array_key_exists($name, $this->children[$type]);
     }
 
     /**
@@ -130,6 +141,7 @@ class CatalogObject implements CatalogObjectInterface
     public function hasChildType(string $type): bool
     {
         // TODO: Implement hasChildType() method.
+        return array_key_exists($type, $this->children);
     }
 
     /**
@@ -167,10 +179,17 @@ class CatalogObject implements CatalogObjectInterface
     public function setParent(CatalogInterface $parent)
     {
         // TODO: Implement setParent() method.
+        if ($this->parent === null) {
+            $this->parent = $parent;
+            if (!$parent->hasChildInstance($this)) {
+                $parent->addChildInstance($this);
+            }
+        }
     }
 
     public function getParent(): CatalogInterface
     {
         // TODO: Implement getParent() method.
+        $this->parent;
     }
 }
